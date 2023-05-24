@@ -49,9 +49,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	logger.Info().Interface("metadata", mo.ResultMetadata).Msg("Got credentials from metadata.")
-
 	defer mo.Content.Close()
 
 	b, err := io.ReadAll(mo.Content)
@@ -63,6 +60,8 @@ func main() {
 	if err := json.Unmarshal(b, &c); err != nil {
 		panic(err)
 	}
+
+	logger.Info().Time("expires", c.Expiration).Msg("Got credentials from metadata.")
 
 	time.Sleep(1 * time.Hour)
 }
