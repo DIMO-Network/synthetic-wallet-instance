@@ -6,10 +6,14 @@ require (
 	github.com/DIMO-Network/shared v0.7.2
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.2
+	github.com/ethereum/go-ethereum v1.10.26
 	github.com/gofiber/adaptor/v2 v2.2.1
 	github.com/gofiber/fiber/v2 v2.44.0
 	github.com/prometheus/client_golang v1.15.0
 	github.com/rs/zerolog v1.28.0
+	golang.org/x/sys v0.7.0
+	google.golang.org/grpc v1.45.0
+	google.golang.org/protobuf v1.30.0
 )
 
 require (
@@ -49,7 +53,9 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.45.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
+	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/net v0.8.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

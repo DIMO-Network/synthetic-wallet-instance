@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: dimozone/test-instance
   pullPolicy: IfNotPresent
-  tag: 1fc552b
+  tag: e593534
 imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
@@ -27,6 +27,8 @@ env:
   MON_PORT: 8888
   GRPC_PORT: 8086
   AWS_REGION: us-east-2
+  ENCLAVE_CID: 16
+  ENCLAVE_PORT: 5000
 service:
   type: ClusterIP
   ports:
