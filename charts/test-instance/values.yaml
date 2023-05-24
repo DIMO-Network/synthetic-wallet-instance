@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: dimozone/test-instance
   pullPolicy: IfNotPresent
-  tag: ca635e5
+  tag: f08f6e3
 imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
@@ -76,9 +76,9 @@ autoscaling:
 nodeSelector:
   aws-nitro-enclaves-k8s-dp: enabled
 tolerations:
-- key: enclave
-  operator: Exists
-  effect: NoSchedule
+  - key: enclave
+    operator: Exists
+    effect: NoSchedule
 affinity: {}
 podDisruptionBudget:
   minAvailable: 0
