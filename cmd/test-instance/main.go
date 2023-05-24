@@ -19,9 +19,10 @@ import (
 )
 
 type cred struct {
-	AccessKeyID     string `json:"AccessKeyId"`
-	SecretAccessKey string `json:"SecretAccessKey"`
-	Token           string `json:"Token"`
+	AccessKeyID     string    `json:"AccessKeyId"`
+	SecretAccessKey string    `json:"SecretAccessKey"`
+	Token           string    `json:"Token"`
+	Expiration      time.Time `json:"Expiration"`
 }
 
 func main() {
@@ -48,6 +49,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	logger.Info().Interface("metadata", mo.ResultMetadata).Msg("Got credentials from metadata.")
 
 	defer mo.Content.Close()
 
