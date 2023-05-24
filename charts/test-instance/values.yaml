@@ -73,8 +73,12 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-nodeSelector: {}
-tolerations: []
+nodeSelector:
+  aws-nitro-enclaves-k8s-dp: enabled
+tolerations:
+- key: enclave
+  operator: Exists
+  effect: NoSchedule
 affinity: {}
 podDisruptionBudget:
   minAvailable: 0
