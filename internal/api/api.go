@@ -38,6 +38,12 @@ type Request[A any] struct {
 	Data          A              `json:"data"`
 }
 
+type AWSCredentials struct {
+	AccessKeyID     string `json:"accessKeyId"`
+	SecretAccessKey string `json:"secretAccessKey"`
+	Token           string `json:"token"`
+}
+
 type AddrReqData struct {
 	ChildNumber uint32 `json:"childNumber"`
 }
@@ -45,12 +51,6 @@ type AddrReqData struct {
 type SignReqData struct {
 	ChildNumber uint32      `json:"childNumber"`
 	Hash        common.Hash `json:"hash"`
-}
-
-type AWSCredentials struct {
-	AccessKeyID     string `json:"accessKeyId"`
-	SecretAccessKey string `json:"secretAccessKey"`
-	Token           string `json:"token"`
 }
 
 type AddrResData struct {
@@ -105,6 +105,8 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("Created socket %d.", fd)
 
 	sa := &unix.SockaddrVM{CID: s.CID, Port: s.Port}
 
