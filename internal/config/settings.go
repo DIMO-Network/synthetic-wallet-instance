@@ -7,8 +7,8 @@ type Settings struct {
 	MonPort     string `yaml:"MON_PORT"`
 	GRPCPort    string `yaml:"GRPC_PORT"`
 
-	BIP32Seed string `json:"BIP32_SEED"`
+	BIP32Seed string `yaml:"BIP32_SEED"`
 
-	EnclaveCID  int `json:"ENCLAVE_CID"`
-	EnclavePort int `json:"ENCLAVE_PORT"`
+	EnclaveCID  int `yaml:"ENCLAVE_CID"`
+	EnclavePort int `yaml:"ENCLAVE_PORT"`
 }
