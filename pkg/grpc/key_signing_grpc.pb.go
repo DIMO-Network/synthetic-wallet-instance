@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	VirtualDeviceWallet_GetAddress_FullMethodName = "/wallet.VirtualDeviceWallet/GetAddress"
+	VirtualDeviceWallet_SignHash_FullMethodName   = "/wallet.VirtualDeviceWallet/SignHash"
 )
 
 // VirtualDeviceWalletClient is the client API for VirtualDeviceWallet service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VirtualDeviceWalletClient interface {
 	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*GetAddressResponse, error)
+	SignHash(ctx context.Context, in *SignHashRequest, opts ...grpc.CallOption) (*SignHashResponse, error)
 }
 
 type virtualDeviceWalletClient struct {
@@ -46,11 +48,21 @@ func (c *virtualDeviceWalletClient) GetAddress(ctx context.Context, in *GetAddre
 	return out, nil
 }
 
+func (c *virtualDeviceWalletClient) SignHash(ctx context.Context, in *SignHashRequest, opts ...grpc.CallOption) (*SignHashResponse, error) {
+	out := new(SignHashResponse)
+	err := c.cc.Invoke(ctx, VirtualDeviceWallet_SignHash_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VirtualDeviceWalletServer is the server API for VirtualDeviceWallet service.
 // All implementations must embed UnimplementedVirtualDeviceWalletServer
 // for forward compatibility
 type VirtualDeviceWalletServer interface {
 	GetAddress(context.Context, *GetAddressRequest) (*GetAddressResponse, error)
+	SignHash(context.Context, *SignHashRequest) (*SignHashResponse, error)
 	mustEmbedUnimplementedVirtualDeviceWalletServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedVirtualDeviceWalletServer struct {
 
 func (UnimplementedVirtualDeviceWalletServer) GetAddress(context.Context, *GetAddressRequest) (*GetAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAddress not implemented")
+}
+func (UnimplementedVirtualDeviceWalletServer) SignHash(context.Context, *SignHashRequest) (*SignHashResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignHash not implemented")
 }
 func (UnimplementedVirtualDeviceWalletServer) mustEmbedUnimplementedVirtualDeviceWalletServer() {}
 
@@ -92,6 +107,24 @@ func _VirtualDeviceWallet_GetAddress_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VirtualDeviceWallet_SignHash_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignHashRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VirtualDeviceWalletServer).SignHash(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VirtualDeviceWallet_SignHash_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VirtualDeviceWalletServer).SignHash(ctx, req.(*SignHashRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VirtualDeviceWallet_ServiceDesc is the grpc.ServiceDesc for VirtualDeviceWallet service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var VirtualDeviceWallet_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAddress",
 			Handler:    _VirtualDeviceWallet_GetAddress_Handler,
+		},
+		{
+			MethodName: "SignHash",
+			Handler:    _VirtualDeviceWallet_SignHash_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

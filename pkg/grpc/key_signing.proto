@@ -6,8 +6,16 @@ package wallet;
 
 service VirtualDeviceWallet {
   rpc GetAddress(GetAddressRequest) returns (GetAddressResponse);
+  rpc SignHash(SignHashRequest) returns (SignHashResponse);
 }
 
 message GetAddressRequest { uint32 child_number = 1; }
 
 message GetAddressResponse { bytes address = 1; }
+
+message SignHashRequest {
+  uint32 child_number = 1;
+  bytes hash = 2;
+}
+
+message SignHashResponse { bytes signature = 1; }
