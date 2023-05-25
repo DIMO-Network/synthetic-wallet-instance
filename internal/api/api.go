@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 
@@ -32,14 +33,23 @@ type Request struct {
 	ChildNumber   uint32         `json:"childNumber"`
 }
 
-type Response struct {
-	Address common.Address `json:"address"`
-}
-
 type AWSCredentials struct {
 	AccessKeyID     string `json:"accessKeyId"`
 	SecretAccessKey string `json:"secretAccessKey"`
 	Token           string `json:"token"`
+}
+
+type AddrData struct {
+	Address common.Address `json:"address"`
+}
+
+type ErrData struct {
+	Message string `json:"message"`
+}
+
+type Response[A any] struct {
+	Code int `json:"code"`
+	Data A   `json:"data"`
 }
 
 const bufferSize = 4096
@@ -98,10 +108,23 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
-	var r Response
+	var r Response[json.RawMessage]
 	if err := json.Unmarshal(buf[:n], &r); err != nil {
 		return nil, err
 	}
 
-	return &grpc.GetAddressResponse{Address: r.Address.Bytes()}, nil
+	if r.Code != 0 {
+		var e ErrData
+		if err := json.Unmarshal(r.Data, &e); err != nil {
+			return nil, err
+		}
+		return nil, fmt.Errorf("error from enclave: %s", e.Message)
+	}
+
+	var ad AddrData
+	if err := json.Unmarshal(r.Data, &ad); err != nil {
+		return nil, err
+	}
+
+	return &grpc.GetAddressResponse{Address: ad.Address.Bytes()}, nil
 }
