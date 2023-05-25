@@ -68,6 +68,8 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 	}
 	defer mo.Content.Close()
 
+	log.Printf("Got EC2 metadata.")
+
 	b, err := io.ReadAll(mo.Content)
 	if err != nil {
 		return nil, err
@@ -89,6 +91,8 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
+	log.Printf("Connected to socket.")
+
 	m := Request{
 		Credentials:   AWSCredentials(c),
 		EncryptedSeed: s.EncryptedSeed,
@@ -101,12 +105,16 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
+	log.Printf("Request sent.")
+
 	buf := make([]byte, bufferSize)
 
 	n, err := unix.Read(fd, buf)
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("Got response: %s", string(buf[:n]))
 
 	var r Response[json.RawMessage]
 	if err := json.Unmarshal(buf[:n], &r); err != nil {
