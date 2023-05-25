@@ -20,7 +20,7 @@ func main() {
 		logger.Fatal().Err(err).Msg("Could not load settings")
 	}
 
-	logger.Info().Msgf("Loaded settings: CID %d, port %d, seed %q", settings.EnclaveCID, settings.EnclavePort, settings.BIP32Seed[:10])
+	logger.Info().Msgf("Loaded settings: CID %d, port %d.", settings.EnclaveCID, settings.EnclavePort)
 
 	serveMonitoring(settings.MonPort, &logger)
 

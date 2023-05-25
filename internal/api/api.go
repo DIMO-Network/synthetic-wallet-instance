@@ -114,7 +114,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
-	log.Printf("Connected to socket.")
+	log.Printf("Connected to CID %d, port %d.", s.CID, s.Port)
 
 	m := Request[AddrReqData]{
 		Credentials:   AWSCredentials(c),
