@@ -22,6 +22,7 @@ func startGRPCServer(settings *config.Settings, logger *zerolog.Logger) {
 		CID:           uint32(settings.EnclaveCID),
 		Port:          uint32(settings.EnclavePort),
 		EncryptedSeed: settings.BIP32Seed,
+		Logger:        logger,
 	}
 
 	pb.RegisterVirtualDeviceWalletServer(server, wal)

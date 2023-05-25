@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 
 	"github.com/DIMO-Network/test-instance/pkg/grpc"
 	awsconf "github.com/aws/aws-sdk-go-v2/config"
@@ -13,6 +12,7 @@ import (
 	"github.com/btcsuite/btcutil/hdkeychain"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/rs/zerolog"
 	"golang.org/x/sys/unix"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -23,6 +23,7 @@ type Server struct {
 	CID           uint32
 	Port          uint32
 	EncryptedSeed string
+	Logger        *zerolog.Logger
 }
 
 type cred struct {
@@ -77,6 +78,8 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, status.Errorf(codes.InvalidArgument, "child_number %d >= 2^31", in.ChildNumber)
 	}
 
+	s.Logger.Info().Msgf("Got address request, child number %d.", in.ChildNumber)
+
 	cfg, err := awsconf.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err
@@ -89,7 +92,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 	}
 	defer mo.Content.Close()
 
-	log.Printf("Got EC2 metadata.")
+	s.Logger.Debug().Msg("Got EC2 metadata.")
 
 	b, err := io.ReadAll(mo.Content)
 	if err != nil {
@@ -106,7 +109,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
-	log.Printf("Created socket %d.", fd)
+	s.Logger.Debug().Msgf("Created socket %d.", fd)
 
 	sa := &unix.SockaddrVM{CID: s.CID, Port: s.Port}
 
@@ -114,7 +117,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
-	log.Printf("Connected to CID %d, port %d.", s.CID, s.Port)
+	s.Logger.Debug().Msgf("Connected socket to CID %d, port %d.", s.CID, s.Port)
 
 	m := Request[AddrReqData]{
 		Credentials:   AWSCredentials(c),
@@ -127,11 +130,13 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 
 	b, _ = json.Marshal(m)
 
+	s.Logger.Debug().Msgf("Sending request: %q", string(b))
+
 	if err := unix.Send(fd, b, 0); err != nil {
 		return nil, err
 	}
 
-	log.Printf("Request sent.")
+	s.Logger.Debug().Msg("Request sent.")
 
 	buf := make([]byte, bufferSize)
 
@@ -140,7 +145,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, err
 	}
 
-	log.Printf("Got response: %s", string(buf[:n]))
+	s.Logger.Debug().Msgf("Got response: %q", string(buf[:n]))
 
 	var r Response[json.RawMessage]
 	if err := json.Unmarshal(buf[:n], &r); err != nil {
@@ -172,6 +177,8 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 		return nil, status.Errorf(codes.InvalidArgument, "hash has length %d != %d", len(in.Hash), common.HashLength)
 	}
 
+	s.Logger.Info().Msgf("Got signature request, child number %d, hash %d.", in.ChildNumber, common.BytesToHash(in.Hash))
+
 	cfg, err := awsconf.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err
@@ -184,7 +191,7 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 	}
 	defer mo.Content.Close()
 
-	log.Printf("Got EC2 metadata.")
+	s.Logger.Debug().Msg("Got EC2 metadata.")
 
 	b, err := io.ReadAll(mo.Content)
 	if err != nil {
@@ -201,13 +208,15 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 		return nil, err
 	}
 
+	s.Logger.Debug().Msgf("Created socket %d.", fd)
+
 	sa := &unix.SockaddrVM{CID: s.CID, Port: s.Port}
 
 	if err := unix.Connect(fd, sa); err != nil {
 		return nil, err
 	}
 
-	log.Printf("Connected to socket.")
+	s.Logger.Debug().Msgf("Connected to CID %d, port %d.", s.CID, s.Port)
 
 	m := Request[SignReqData]{
 		Credentials:   AWSCredentials(c),
@@ -221,11 +230,13 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 
 	b, _ = json.Marshal(m)
 
+	s.Logger.Debug().Msgf("Sending request %q.", string(b))
+
 	if err := unix.Send(fd, b, 0); err != nil {
 		return nil, err
 	}
 
-	log.Printf("Request sent.")
+	s.Logger.Debug().Msg("Request sent.")
 
 	buf := make([]byte, bufferSize)
 
@@ -234,7 +245,7 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 		return nil, err
 	}
 
-	log.Printf("Got response: %s", string(buf[:n]))
+	s.Logger.Debug().Msgf("Got response: %s", string(buf[:n]))
 
 	var r Response[json.RawMessage]
 	if err := json.Unmarshal(buf[:n], &r); err != nil {
