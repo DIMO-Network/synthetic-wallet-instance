@@ -4,16 +4,16 @@ import (
 	"os"
 
 	"github.com/DIMO-Network/shared"
-	"github.com/DIMO-Network/test-instance/internal/config"
-	"github.com/gofiber/adaptor/v2"
+	"github.com/DIMO-Network/synthetic-device-wallet-instance-api/internal/config"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/rs/zerolog"
 )
 
 func main() {
-	logger := zerolog.New(os.Stdout).With().Timestamp().Str("app", "test-instance").Logger()
+	logger := zerolog.New(os.Stdout).With().Timestamp().Str("app", "synthetic-device-wallet-instance-api").Logger()
 
 	settings, err := shared.LoadConfig[config.Settings]("settings.yaml")
 	if err != nil {

@@ -3,9 +3,9 @@ package main
 import (
 	"net"
 
-	"github.com/DIMO-Network/test-instance/internal/api"
-	"github.com/DIMO-Network/test-instance/internal/config"
-	pb "github.com/DIMO-Network/test-instance/pkg/grpc"
+	"github.com/DIMO-Network/synthetic-device-wallet-instance-api/internal/api"
+	"github.com/DIMO-Network/synthetic-device-wallet-instance-api/internal/config"
+	pb "github.com/DIMO-Network/synthetic-device-wallet-instance-api/pkg/grpc"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
 )

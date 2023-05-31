@@ -1,4 +1,4 @@
-module github.com/DIMO-Network/test-instance
+module github.com/DIMO-Network/synthetic-device-wallet-instance-api
 
 go 1.19
 
@@ -8,11 +8,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.2
 	github.com/btcsuite/btcutil v1.0.2
 	github.com/ethereum/go-ethereum v1.10.26
-	github.com/gofiber/adaptor/v2 v2.2.1
-	github.com/gofiber/fiber/v2 v2.44.0
+	github.com/gofiber/fiber/v2 v2.46.0
 	github.com/prometheus/client_golang v1.15.0
 	github.com/rs/zerolog v1.28.0
-	golang.org/x/sys v0.7.0
+	golang.org/x/sys v0.8.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.30.0
 )
@@ -53,7 +52,7 @@ require (
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.45.0 // indirect
+	github.com/valyala/fasthttp v1.47.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
