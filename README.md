@@ -16,12 +16,12 @@
 
 ```bash
 cp settings.sample.yaml settings.yaml
-go run ./cmd/test-instance
+go run ./cmd/synthetic-device-wallet-instance-api
 ```
 
 ### To run the project
 
-`go run ./cmd/test-instance`
+`go run ./cmd/synthetic-device-wallet-instance-api`
 
 1. Create a settings file by copying the sample
 
@@ -33,7 +33,7 @@ go run ./cmd/test-instance
 
 2. You are now ready to run the application:
    ````sh
-   go run ./cmd/test-instance
+   go run ./cmd/synthetic-device-wallet-instance-api
     ```
    > If you get a port conflict, you can find the existing process using the port with, e.g., `lsof -i :<Your_Port_Number_Here>` or simply kill whatever is on the port with `npx kill-port --port <Port_Number>`.
    ````

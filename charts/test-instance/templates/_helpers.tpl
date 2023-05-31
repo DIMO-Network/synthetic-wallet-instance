@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "test-instance.name" -}}
+{{- define "synthetic-device-wallet-instance-api.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "test-instance.fullname" -}}
+{{- define "synthetic-device-wallet-instance-api.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "test-instance.chart" -}}
+{{- define "synthetic-device-wallet-instance-api.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "test-instance.labels" -}}
-helm.sh/chart: {{ include "test-instance.chart" . }}
-{{ include "test-instance.selectorLabels" . }}
+{{- define "synthetic-device-wallet-instance-api.labels" -}}
+helm.sh/chart: {{ include "synthetic-device-wallet-instance-api.chart" . }}
+{{ include "synthetic-device-wallet-instance-api.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "test-instance.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "test-instance.name" . }}
+{{- define "synthetic-device-wallet-instance-api.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "synthetic-device-wallet-instance-api.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "test-instance.serviceAccountName" -}}
+{{- define "synthetic-device-wallet-instance-api.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "test-instance.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "synthetic-device-wallet-instance-api.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

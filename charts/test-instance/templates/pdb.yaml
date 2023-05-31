@@ -2,11 +2,11 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ include "test-instance.fullname" . }}
+  name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}
   labels:
-    {{- include "test-instance.labels" . | nindent 4 }}
+    {{- include "synthetic-device-wallet-instance-api.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-    {{- include "test-instance.selectorLabels" . | nindent 6 }}
+    {{- include "synthetic-device-wallet-instance-api.selectorLabels" . | nindent 6 }}
 {{ toYaml .Values.podDisruptionBudget | indent 2 }}

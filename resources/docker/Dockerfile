@@ -2,8 +2,8 @@ FROM golang:1.19 AS build
 
 RUN useradd -u 10001 dimo
 
-WORKDIR /go/src/github.com/DIMO-INC/test-instance/
-COPY . /go/src/github.com/DIMO-INC/test-instance/
+WORKDIR /go/src/github.com/DIMO-INC/synthetic-device-wallet-instance-api/
+COPY . /go/src/github.com/DIMO-INC/synthetic-device-wallet-instance-api/
 
 ENV CGO_ENABLED=0
 ENV GOOS=linux
@@ -22,11 +22,11 @@ WORKDIR /
 
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /etc/passwd /etc/passwd
-COPY --from=build /go/src/github.com/DIMO-INC/test-instance/target/bin/test-instance .
+COPY --from=build /go/src/github.com/DIMO-INC/synthetic-device-wallet-instance-api/target/bin/synthetic-device-wallet-instance-api .
 
 USER dimo
 
 EXPOSE 8080
 EXPOSE 8888
 
-CMD /test-instance
+CMD /synthetic-device-wallet-instance-api

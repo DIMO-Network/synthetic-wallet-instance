@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: dimozone/test-instance
+  repository: dimozone/synthetic-device-wallet-instance-api
   pullPolicy: IfNotPresent
   tag: ac921ea
 imagePullSecrets: []
@@ -56,9 +56,9 @@ ingress:
     nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/cors-allow-origin: https://app.dev.dimo.zone
     nginx.ingress.kubernetes.io/limit-rps: '3'
-    external-dns.alpha.kubernetes.io/hostname: test-instance.dev.dimo.zone
+    external-dns.alpha.kubernetes.io/hostname: synthetic-device-wallet-instance-api.dev.dimo.zone
   hosts:
-    - host: test-instance.dev.dimo.zone
+    - host: synthetic-device-wallet-instance-api.dev.dimo.zone
       paths:
         - path: /
           pathType: ImplementationSpecific

@@ -2,14 +2,14 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "test-instance.fullname" . }}-monitor
+  name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}-monitor
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "test-instance.labels" . | nindent 4 }}
+    {{- include "synthetic-device-wallet-instance-api.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-    {{- include "test-instance.selectorLabels" . | nindent 6 }}
+    {{- include "synthetic-device-wallet-instance-api.selectorLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

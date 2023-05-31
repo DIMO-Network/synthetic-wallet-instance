@@ -1,6 +1,6 @@
 replicaCount: 9
 image:
-  repository: dimozone/test-instance
+  repository: dimozone/synthetic-device-wallet-instance-api
   pullPolicy: IfNotPresent
   tag: 0.3.3
 cronJob:
