@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-option go_package = "github.com/DIMO-Network/test-enclave/pkg/grpc";
+option go_package = "github.com/DIMO-Network/synthetic-wallet-instance/pkg/grpc";
 
-package wallet;
+package grpc;
 
-service VirtualDeviceWallet {
+service SyntheticWallet {
   rpc GetAddress(GetAddressRequest) returns (GetAddressResponse);
   rpc SignHash(SignHashRequest) returns (SignHashResponse);
 }

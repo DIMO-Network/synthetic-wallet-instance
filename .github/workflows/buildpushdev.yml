@@ -30,12 +30,12 @@ jobs:
           file: ./resources/docker/Dockerfile
           push: true
           platforms: linux/amd64
-          tags: dimozone/synthetic-device-wallet-instance-api:${{ steps.slug.outputs.sha7 }}, dimozone/synthetic-device-wallet-instance-api:latest
+          tags: dimozone/synthetic-wallet-instance:${{ steps.slug.outputs.sha7 }}, dimozone/synthetic-wallet-instance:latest
 
       - name: Update Image Version in the worker HelmChart values.yaml
         uses: fjogeleit/yaml-update-action@v0.11.1
         with:
-          valueFile: 'charts/synthetic-device-wallet-instance-api/values.yaml'
+          valueFile: 'charts/synthetic-wallet-instance/values.yaml'
           propertyPath: 'image.tag'
           value: ${{ steps.slug.outputs.sha7 }}
           branch: main

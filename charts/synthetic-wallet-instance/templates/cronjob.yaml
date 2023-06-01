@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}-load-dd
+  name: {{ include "synthetic-wallet-instance.fullname" . }}-load-dd
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "synthetic-device-wallet-instance-api.labels" . | nindent 4 }}
+    {{- include "synthetic-wallet-instance.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.cronJob.schedule | quote}}
   concurrencyPolicy: "Forbid"
@@ -18,7 +18,7 @@ spec:
             {{- toYaml . | nindent 8 }}
           {{- end }}
           labels:
-            {{- include "synthetic-device-wallet-instance-api.selectorLabels" . | nindent 12 }}
+            {{- include "synthetic-wallet-instance.selectorLabels" . | nindent 12 }}
         spec:
           containers: []
           restartPolicy: OnFailure

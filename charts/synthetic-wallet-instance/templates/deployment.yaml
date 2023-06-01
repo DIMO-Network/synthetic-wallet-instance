@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}
+  name: {{ include "synthetic-wallet-instance.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "synthetic-device-wallet-instance-api.labels" . | nindent 4 }}
+    {{- include "synthetic-wallet-instance.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "synthetic-device-wallet-instance-api.selectorLabels" . | nindent 6 }}
+      {{- include "synthetic-wallet-instance.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "synthetic-device-wallet-instance-api.selectorLabels" . | nindent 8 }}
+        {{- include "synthetic-wallet-instance.selectorLabels" . | nindent 8 }}
     spec:
       topologySpreadConstraints:
       - maxSkew: 1
@@ -28,12 +28,12 @@ spec:
         whenUnsatisfiable: ScheduleAnyway
         labelSelector:
           matchLabels:
-            {{- include "synthetic-device-wallet-instance-api.selectorLabels" . | nindent 12 }}
+            {{- include "synthetic-wallet-instance.selectorLabels" . | nindent 12 }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "synthetic-device-wallet-instance-api.serviceAccountName" . }}
+      serviceAccountName: {{ include "synthetic-wallet-instance.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers: []
@@ -45,9 +45,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
           - configMapRef:
-              name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}-config
+              name: {{ include "synthetic-wallet-instance.fullname" . }}-config
           - secretRef:
-              name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}-secret
+              name: {{ include "synthetic-wallet-instance.fullname" . }}-secret
           ports:
 {{ toYaml .Values.ports | indent 12 }}
           livenessProbe:

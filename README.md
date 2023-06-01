@@ -16,12 +16,12 @@
 
 ```bash
 cp settings.sample.yaml settings.yaml
-go run ./cmd/synthetic-device-wallet-instance-api
+go run ./cmd/synthetic-wallet-instance
 ```
 
 ### To run the project
 
-`go run ./cmd/synthetic-device-wallet-instance-api`
+`go run ./cmd/synthetic-wallet-instance`
 
 1. Create a settings file by copying the sample
 
@@ -33,7 +33,7 @@ go run ./cmd/synthetic-device-wallet-instance-api
 
 2. You are now ready to run the application:
    ````sh
-   go run ./cmd/synthetic-device-wallet-instance-api
+   go run ./cmd/synthetic-wallet-instance
     ```
    > If you get a port conflict, you can find the existing process using the port with, e.g., `lsof -i :<Your_Port_Number_Here>` or simply kill whatever is on the port with `npx kill-port --port <Port_Number>`.
    ````
@@ -71,20 +71,6 @@ To regenerate a mock, you can use go gen since the files that are mocked have a 
 `nhtsa_api_service.go`
 
 ## API
-
-### Generating swagger / openapi spec
-
-Note that swagger must be served from fiber-swagger library v2.31.1 +, since they fixed an issue in previous version.
-
-To check what cli version you have installed: `swag --version`. As of this writing v1.8.1 is working for us.
-
-```bash
-go install github.com/swaggo/swag/cmd/swag@latest
-swag init -g cmd/devices-api/main.go --parseDependency --parseInternal --generatedTime true
-# optionally add `--parseDepth 2` if have issues
-```
-
-[declarative_comments_format](https://swaggo.github.io/swaggo.io/declarative_comments_format/)
 
 ## Protocol buffers
 

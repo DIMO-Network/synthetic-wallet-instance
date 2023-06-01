@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}
+  name: {{ include "synthetic-wallet-instance.fullname" . }}
   labels:
-    {{- include "synthetic-device-wallet-instance-api.labels" . | nindent 4 }}
+    {{- include "synthetic-wallet-instance.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "synthetic-device-wallet-instance-api.fullname" . }}
+    name: {{ include "synthetic-wallet-instance.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

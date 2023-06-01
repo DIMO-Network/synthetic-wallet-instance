@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/DIMO-Network/synthetic-device-wallet-instance-api/pkg/grpc"
+	"github.com/DIMO-Network/synthetic-wallet-instance/pkg/grpc"
 	awsconf "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
 	"github.com/btcsuite/btcutil/hdkeychain"
@@ -19,7 +19,7 @@ import (
 )
 
 type Server struct {
-	grpc.UnimplementedVirtualDeviceWalletServer
+	grpc.UnimplementedSyntheticWalletServer
 	CID           uint32
 	Port          uint32
 	EncryptedSeed string

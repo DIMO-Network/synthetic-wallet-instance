@@ -19,12 +19,12 @@ LD_FLAGS   = -w -s
 GO_FLAGS   =
 DOCS_FLAGS =
 
-APPS = synthetic-device-wallet-instance-api
+APPS = synthetic-wallet-instance
 all: $(APPS)
 
 install: $(APPS)
 	@mkdir -p bin
-	@cp $(PATHINSTBIN)/synthetic-device-wallet-instance-api ./bin/
+	@cp $(PATHINSTBIN)/synthetic-wallet-instance ./bin/
 
 deps:
 	@go mod tidy
@@ -48,12 +48,12 @@ docker-cgo-tags:
 	@echo "latest-cgo,$(VER_CUT)-cgo,$(VER_MAJOR).$(VER_MINOR)-cgo,$(VER_MAJOR)-cgo" > .tags
 
 docker: deps
-	@docker build -f ./resources/docker/Dockerfile . -t dimozone/synthetic-device-wallet-instance-api:$(VER_CUT)
-	@docker tag dimozone/synthetic-device-wallet-instance-api:$(VER_CUT) dimozone/synthetic-device-wallet-instance-api:latest
+	@docker build -f ./resources/docker/Dockerfile . -t dimozone/synthetic-wallet-instance:$(VER_CUT)
+	@docker tag dimozone/synthetic-wallet-instance:$(VER_CUT) dimozone/synthetic-wallet-instance:latest
 
 docker-cgo: deps
-	@docker build -f ./resources/docker/Dockerfile.cgo . -t dimozone/synthetic-device-wallet-instance-api:$(VER_CUT)-cgo
-	@docker tag dimozone/synthetic-device-wallet-instance-api:$(VER_CUT)-cgo dimozone/synthetic-device-wallet-instance-api:latest-cgo
+	@docker build -f ./resources/docker/Dockerfile.cgo . -t dimozone/synthetic-wallet-instance:$(VER_CUT)-cgo
+	@docker tag dimozone/synthetic-wallet-instance:$(VER_CUT)-cgo dimozone/synthetic-wallet-instance:latest-cgo
 
 gen-proto:
 	@protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative pkg/grpc/*.proto
@@ -67,7 +67,7 @@ lint:
 
 test: $(APPS)
 	@go test $(GO_FLAGS) -timeout 3m -race ./...
-	@$(PATHINSTBIN)/synthetic-device-wallet-instance-api test ./config/test/...
+	@$(PATHINSTBIN)/synthetic-wallet-instance test ./config/test/...
 
 clean:
 	rm -rf $(PATHINSTBIN)

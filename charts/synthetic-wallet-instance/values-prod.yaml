@@ -1,15 +1,11 @@
 replicaCount: 9
 image:
-  repository: dimozone/synthetic-device-wallet-instance-api
+  repository: dimozone/synthetic-wallet-instance
   pullPolicy: IfNotPresent
   tag: 0.3.3
 cronJob:
   enabled: false
-env:
-  ENVIRONMENT: prod
-  KAFKA_BROKERS: kafka-prod-dimo-kafka-kafka-brokers:9092
-  WORKER_COUNT: 500
-  NATS_URL: nats-prod:4222
+env: {}
 ingress:
   enabled: false
 resources:

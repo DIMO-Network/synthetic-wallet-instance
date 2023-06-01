@@ -1,4 +1,4 @@
-module github.com/DIMO-Network/synthetic-device-wallet-instance-api
+module github.com/DIMO-Network/synthetic-wallet-instance
 
 go 1.19
 
