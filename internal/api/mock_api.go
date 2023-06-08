@@ -5,7 +5,6 @@ import (
 
 	"github.com/DIMO-Network/synthetic-wallet-instance/pkg/grpc"
 	"github.com/btcsuite/btcd/btcutil/hdkeychain"
-	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog"
@@ -30,12 +29,14 @@ func (s MockServer) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) 
 		return nil, err
 	}
 
-	akh, err := ck.Address(&chaincfg.MainNetParams)
+	sk, err := ck.ECPrivKey()
 	if err != nil {
 		return nil, err
 	}
 
-	return &grpc.GetAddressResponse{Address: akh.ScriptAddress()}, nil
+	addr := crypto.PubkeyToAddress(sk.ToECDSA().PublicKey)
+
+	return &grpc.GetAddressResponse{Address: addr.Bytes()}, nil
 }
 
 func (s MockServer) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.SignHashResponse, error) {
