@@ -16,7 +16,7 @@ import (
 	pb "github.com/DIMO-Network/synthetic-wallet-instance/pkg/grpc"
 )
 
-var svc = flag.String("a", "localhos:9005", "wallet gRPC address")
+var svc = flag.String("a", "localhost:9005", "wallet gRPC address")
 var runs = flag.Int("i", 100, "number of iterations")
 
 func main() {
@@ -34,6 +34,8 @@ func main() {
 	}
 
 	client := pb.NewSyntheticWalletClient(conn)
+
+	totalDur := time.Duration(0)
 
 	for i := 0; i < *runs; i++ {
 		cn := uint32(rand.Int31())
@@ -54,6 +56,7 @@ func main() {
 			panic(err)
 		}
 
+		t1 := time.Now()
 		r2, err := client.SignHash(context.TODO(), &pb.SignHashRequest{
 			ChildNumber: cn,
 			Hash:        hash,
@@ -61,6 +64,8 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+
+		totalDur += time.Since(t1)
 
 		if len(r2.Signature) != 65 {
 			panic(err)
@@ -86,4 +91,6 @@ func main() {
 			logger.Fatal().Msgf("recovered = %s, desired = %s", crypto.PubkeyToAddress(*pk), addr)
 		}
 	}
+
+	logger.Info().Msgf("Average signing duration: %s.", totalDur/time.Duration(*runs))
 }
