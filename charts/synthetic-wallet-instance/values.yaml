@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: dimozone/synthetic-wallet-instance
   pullPolicy: IfNotPresent
-  tag: 213cae1
+  tag: e94c384
 imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
