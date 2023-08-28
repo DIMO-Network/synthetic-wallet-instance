@@ -60,6 +60,21 @@ spec:
               port: mon-http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        - name: synthetic-wallet-enclave
+          image: dimozone/synthetic-wallet-enclave:latest
+          resources:
+            limits:
+              aws.ec2.nitro/nitro_enclaves: "1"
+              hugepages-2Mi: 1024Mi
+              cpu: 2
+            requests:
+              aws.ec2.nitro/nitro_enclaves: "1"
+              hugepages-2Mi: 1024Mi
+              cpu: 2
+          volumeMounts:
+          - mountPath: /dev/hugepages
+            name: hugepage
+            readOnly: false
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -68,6 +83,10 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+      - name: hugepage
+        emptyDir:
+          medium: HugePages-2Mi
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
