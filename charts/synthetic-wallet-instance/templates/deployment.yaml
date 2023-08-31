@@ -75,9 +75,9 @@ spec:
               cpu: 2
           volumeMounts:
             - name: nitro-enclaves
-              path: /dev/nitro_enclaves
-            - mountPath: /dev/hugepages
-              name: hugepage
+              mountPath: /dev/nitro_enclaves
+            - name: hugepage
+              mountPath: /dev/hugepages
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
