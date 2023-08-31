@@ -11,10 +11,7 @@ serviceAccount:
   annotations: {}
   name: ''
 podAnnotations: {}
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1001
+podSecurityContext: {}
 securityContext:
   allowPrivilegeEscalation: false
   capabilities:
