@@ -75,7 +75,6 @@ spec:
               cpu: 2
           volumeMounts:
             - name: nitro-enclaves
-              hostPath:
               path: /dev/nitro_enclaves
             - mountPath: /dev/hugepages
               name: hugepage
