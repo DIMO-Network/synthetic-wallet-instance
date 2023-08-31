@@ -62,6 +62,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: synthetic-wallet-enclave
           image: dimozone/synthetic-wallet-enclave:latest
+          securityContext:
+            privileged: true
           resources:
             limits:
               aws.ec2.nitro/nitro_enclaves: "1"
@@ -72,9 +74,11 @@ spec:
               hugepages-2Mi: 1024Mi
               cpu: 2
           volumeMounts:
-          - mountPath: /dev/hugepages
-            name: hugepage
-            readOnly: false
+            - name: nitro-enclaves
+              hostPath:
+              path: /dev/nitro_enclaves
+            - mountPath: /dev/hugepages
+              name: hugepage
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -84,6 +88,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+      - name: nitro-enclaves
+        hostPath:
+          path: /dev/nitro_enclaves
       - name: hugepage
         emptyDir:
           medium: HugePages-2Mi
