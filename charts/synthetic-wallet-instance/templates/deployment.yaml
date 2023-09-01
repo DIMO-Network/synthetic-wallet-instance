@@ -76,8 +76,11 @@ spec:
           volumeMounts:
             - name: nitro-enclaves
               mountPath: /dev/nitro_enclaves
-            - name: hugepage
-              mountPath: /dev/hugepages
+            - mountPath: /hugepages-2Mi
+              name: hugepage-2mi
+              readOnly: false
+            - mountPath: /hugepages-1Gi
+              name: hugepage-1gi
               readOnly: false
       {{- with .Values.nodeSelector }}
       nodeSelector:
