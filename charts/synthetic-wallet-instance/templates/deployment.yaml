@@ -67,17 +67,18 @@ spec:
           resources:
             limits:
               aws.ec2.nitro/nitro_enclaves: "1"
-              hugepages-2Mi: 1024Mi
+              hugepages-2Mi: 2048Mi
               cpu: 2
             requests:
               aws.ec2.nitro/nitro_enclaves: "1"
-              hugepages-2Mi: 1024Mi
+              hugepages-1Gi: 2048Mi
               cpu: 2
           volumeMounts:
             - name: nitro-enclaves
               mountPath: /dev/nitro_enclaves
             - name: hugepage
               mountPath: /dev/hugepages
+              readOnly: false
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -90,9 +91,12 @@ spec:
       - name: nitro-enclaves
         hostPath:
           path: /dev/nitro_enclaves
-      - name: hugepage
+      - name: hugepage-2mi
         emptyDir:
           medium: HugePages-2Mi
+      - name: hugepage-1gi
+        emptyDir:
+          medium: HugePages-1Gi
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
