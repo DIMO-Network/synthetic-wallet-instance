@@ -61,25 +61,60 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: synthetic-wallet-enclave
-          image: dimozone/synthetic-wallet-enclave:latest
-          securityContext:
-            privileged: true
+          image: dimozone/synthetic-wallet-enclave:d5b0d6f
+          env:
+          - name: MEMORY_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                containerName: synthetic-wallet-enclave
+                divisor: 1M
+                resource: limits.memory
+          - name: CPU_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                containerName: synthetic-wallet-enclave
+                divisor: "0"
+                resource: limits.cpu
+          - name: HUGEPAGES_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                containerName: synthetic-wallet-enclave
+                divisor: 1M
+                resource: limits.hugepages-1Gi
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /bin/sh
+                - -c
+                - nitro-cli terminate-enclave --enclave-name synthetic-wallet-enclave
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - '-c'
+                - >-
+                  nitro-cli describe-enclaves  | jq -e '[.[] | select(.EnclaveName
+                  == "synthetic-wallet-enclave" and .State == "RUNNING")] | length
+                  == 1'
+            failureThreshold: 2
+            initialDelaySeconds: 10
           resources:
             limits:
               aws.ec2.nitro/nitro_enclaves: "1"
-              hugepages-2Mi: 1024Mi
-              memory: 1536Mi
-              cpu: 2
+              hugepages-1Gi: 1Gi
+              memory: 512Mi
+              cpu: 500m
             requests:
               aws.ec2.nitro/nitro_enclaves: "1"
-              hugepages-2Mi: 1024Mi
-              memory: 1536Mi
-              cpu: 2
+              hugepages-1Gi: 1Gi
+              memory: 128Mi
+              cpu: 100m
           volumeMounts:
             - name: nitro-enclaves
               mountPath: /dev/nitro_enclaves
-            - mountPath: /hugepages-2Mi
-              name: hugepage-2mi
+            - name: hugepage-1gi
+              mountPath: /dev/hugepages
               readOnly: false
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -93,9 +128,9 @@ spec:
       - name: nitro-enclaves
         hostPath:
           path: /dev/nitro_enclaves
-      - name: hugepage-2mi
+      - name: hugepage-1gi
         emptyDir:
-          medium: HugePages-2Mi
+          medium: HugePages-1Gi
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
