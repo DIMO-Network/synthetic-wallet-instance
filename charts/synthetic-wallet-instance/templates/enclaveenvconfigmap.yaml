@@ -7,5 +7,5 @@ metadata:
     {{- include "synthetic-wallet-instance.labels" . | nindent 4 }}
 data:
 {{- range $key, $val := .Values.enclave.env }}
-  {{ $key }} : {{ $val | quote}}
+  {{ $key }} : {{ $val }}
 {{- end}}
