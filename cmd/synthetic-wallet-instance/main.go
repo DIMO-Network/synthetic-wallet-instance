@@ -20,7 +20,7 @@ func main() {
 		logger.Fatal().Err(err).Msg("Could not load settings")
 	}
 
-	logger.Info().Msgf("Loaded settings: CID %d, port %d.", settings.EnclaveCID, settings.EnclavePort)
+	logger.Info().Msgf("Loaded settings: CID %s, port %s.", settings.EnclaveCID, settings.EnclavePort)
 
 	serveMonitoring(settings.MonPort, &logger)
 
