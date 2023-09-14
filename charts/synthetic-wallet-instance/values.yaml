@@ -47,7 +47,7 @@ enclave:
     ENCLAVE_CPU_COUNT: '2'
     ENCLAVE_MEMORY_SIZE: '1000'
     ENCLAVE_CID: 16
-    AWS_REGION: 'us-east-2'
+    AWS_REGION: us-east-2
     ENCLAVE_DEBUG_MODE: 'yes'
   ports: null
   resources:
@@ -61,7 +61,6 @@ enclave:
       hugepages-1Gi: 1Gi
       memory: 128Mi
       cpu: 100m
-
 service:
   type: ClusterIP
   ports:
@@ -89,7 +88,6 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
-
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -114,3 +112,5 @@ serviceMonitor:
   interval: 30s
 image:
   tag: 740a73d
+  web:
+    tag: a203edb
