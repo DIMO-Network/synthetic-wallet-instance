@@ -71,22 +71,11 @@ spec:
             value: '16'
           - name: AWS_REGION
             value: 'us-east-2'
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                - /bin/sh
-                - -c
-                - nitro-cli terminate-enclave --enclave-name synthetic-wallet-enclave
           livenessProbe:
             exec:
               command:
-                - /bin/sh
-                - '-c'
-                - >-
-                  nitro-cli describe-enclaves  | jq -e '[.[] | select(.EnclaveName
-                  == "synthetic-wallet-enclave" and .State == "RUNNING")] | length
-                  == 1'
+                - /run.sh
+                - 'healthcheck'
             failureThreshold: 2
             initialDelaySeconds: 10
           resources:
