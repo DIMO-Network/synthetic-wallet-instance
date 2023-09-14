@@ -63,24 +63,14 @@ spec:
         - name: synthetic-wallet-enclave
           image: dimozone/synthetic-wallet-enclave:d5b0d6f
           env:
-          - name: MEMORY_LIMIT
-            valueFrom:
-              resourceFieldRef:
-                containerName: synthetic-wallet-enclave
-                divisor: 1M
-                resource: limits.memory
-          - name: CPU_LIMIT
-            valueFrom:
-              resourceFieldRef:
-                containerName: synthetic-wallet-enclave
-                divisor: "0"
-                resource: limits.cpu
-          - name: HUGEPAGES_LIMIT
-            valueFrom:
-              resourceFieldRef:
-                containerName: synthetic-wallet-enclave
-                divisor: 1M
-                resource: limits.hugepages-1Gi
+          - name: ENCLAVE_CPU_COUNT
+            value: 2
+          - name: ENCLAVE_MEMORY_SIZE
+            value: 1000
+          - name: ENCLAVE_CID
+            value: 16
+          - name: AWS_REGION
+            value: us-east-2
           lifecycle:
             preStop:
               exec:
