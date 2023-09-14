@@ -4,7 +4,6 @@ nameOverride: ''
 fullnameOverride: ''
 podAnnotations: {}
 podSecurityContext: {}
-
 web:
   image:
     repository: dimozone/synthetic-wallet-instance
@@ -21,12 +20,12 @@ web:
     ENCLAVE_CID: 16
     ENCLAVE_PORT: 5000
   ports:
-  - name: mon-http
-    containerPort: 8888
-    protocol: TCP
-  - name: grpc
-    containerPort: 8086
-    protocol: TCP
+    - name: mon-http
+      containerPort: 8888
+      protocol: TCP
+    - name: grpc
+      containerPort: 8086
+      protocol: TCP
   resources:
     limits:
       cpu: 250m
@@ -34,7 +33,6 @@ web:
     requests:
       cpu: 100m
       memory: 192Mi
-
 enclave:
   image:
     repository: dimozone/synthetic-wallet-enclave
@@ -49,20 +47,19 @@ enclave:
     ENCLAVE_CPU_COUNT: '2'
     ENCLAVE_MEMORY_SIZE: '1000'
     ENCLAVE_CID: 16
-    AWS_REGION: 'us-east-2'
-  ports:
+    AWS_REGION: us-east-2
+  ports: null
   resources:
     limits:
-      aws.ec2.nitro/nitro_enclaves: "1"
+      aws.ec2.nitro/nitro_enclaves: '1'
       hugepages-1Gi: 1Gi
       memory: 512Mi
       cpu: 500m
     requests:
-      aws.ec2.nitro/nitro_enclaves: "1"
+      aws.ec2.nitro/nitro_enclaves: '1'
       hugepages-1Gi: 1Gi
       memory: 128Mi
       cpu: 100m
-
 service:
   type: ClusterIP
   ports:
@@ -74,7 +71,6 @@ service:
       port: 8086
       targetPort: grpc
       protocol: TCP
-
 ingress:
   enabled: false
   className: nginx
@@ -91,7 +87,6 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
-
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -114,3 +109,5 @@ serviceMonitor:
   path: /metrics
   port: mon-http
   interval: 30s
+image:
+  tag: 74cea93
