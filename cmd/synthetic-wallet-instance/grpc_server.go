@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"strconv"
 
 	"github.com/DIMO-Network/synthetic-wallet-instance/internal/api"
 	"github.com/DIMO-Network/synthetic-wallet-instance/internal/config"
@@ -76,9 +77,12 @@ func startGRPCServer(settings *config.Settings, logger *zerolog.Logger) {
 			Logger: logger,
 		}
 	} else {
+
+		cid, _ := strconv.Atoi(settings.EnclaveCID)
+		encPort, _ := strconv.Atoi(settings.EnclavePort)
 		wal = api.Server{
-			CID:           uint32(settings.EnclaveCID),
-			Port:          uint32(settings.EnclavePort),
+			CID:           uint32(cid),
+			Port:          uint32(encPort),
 			EncryptedSeed: settings.BIP32Seed,
 			Logger:        logger,
 		}

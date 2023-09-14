@@ -8,8 +8,8 @@ type Settings struct {
 
 	BIP32Seed string `yaml:"BIP32_SEED"`
 
-	EnclaveCID  int `yaml:"ENCLAVE_CID"`
-	EnclavePort int `yaml:"ENCLAVE_PORT"`
+	EnclaveCID  string `yaml:"ENCLAVE_CID"`
+	EnclavePort string `yaml:"ENCLAVE_PORT"`
 
 	MockEnclave bool   `yaml:"MOCK_ENCLAVE"`
 	MockSeed    string `yaml:"MOCK_SEED"`
