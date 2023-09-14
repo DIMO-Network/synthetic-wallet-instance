@@ -15,7 +15,9 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/envconfigmap.yaml") . | sha256sum }}
+        checksum/web/config: {{ include (print $.Template.BasePath "/webenvconfigmap.yaml") . | sha256sum }}
+        checksum/enclave/config: {{ include (print $.Template.BasePath "/enclaveenvconfigmap.yaml") . | sha256sum }}
+        checksum/web/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -38,18 +40,18 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers: []
       containers:
-        - name: {{ .Chart.Name }}
+        - name: synthetic-wallet-instance
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .Values.web.securityContext | nindent 12 }}
+          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           envFrom:
           - configMapRef:
               name: {{ include "synthetic-wallet-instance.fullname" . }}-config
           - secretRef:
               name: {{ include "synthetic-wallet-instance.fullname" . }}-secret
           ports:
-{{ toYaml .Values.ports | indent 12 }}
+{{ toYaml .Values.web.ports | indent 12 }}
           livenessProbe:
             httpGet:
               path: /
@@ -59,18 +61,17 @@ spec:
               path: /
               port: mon-http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.web.resources | nindent 12 }}
         - name: synthetic-wallet-enclave
-          image: dimozone/synthetic-wallet-enclave:30ba023
-          env:
-          - name: ENCLAVE_CPU_COUNT
-            value: '2'
-          - name: ENCLAVE_MEMORY_SIZE
-            value: '1000'
-          - name: ENCLAVE_CID
-            value: '16'
-          - name: AWS_REGION
-            value: 'us-east-2'
+          securityContext:
+            {{- toYaml .Values.enclave.securityContext | nindent 12 }}
+          image: "{{ .Values.enclave.image.repository }}:{{ .Values.enclave.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.enclave.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: {{ include "synthetic-wallet-instance.fullname" . }}-enclave-config
+          - secretRef:
+              name: {{ include "synthetic-wallet-instance.fullname" . }}-secret
           livenessProbe:
             exec:
               command:
@@ -79,16 +80,7 @@ spec:
             failureThreshold: 2
             initialDelaySeconds: 10
           resources:
-            limits:
-              aws.ec2.nitro/nitro_enclaves: "1"
-              hugepages-1Gi: 1Gi
-              memory: 512Mi
-              cpu: 500m
-            requests:
-              aws.ec2.nitro/nitro_enclaves: "1"
-              hugepages-1Gi: 1Gi
-              memory: 128Mi
-              cpu: 100m
+            {{- toYaml .Values.web.resources | nindent 12 }}
           volumeMounts:
             - name: nitro-enclaves
               mountPath: /dev/nitro_enclaves

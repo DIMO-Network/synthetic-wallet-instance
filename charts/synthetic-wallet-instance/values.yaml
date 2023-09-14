@@ -1,30 +1,68 @@
 replicaCount: 1
-image:
-  repository: dimozone/synthetic-wallet-instance
-  pullPolicy: IfNotPresent
-  tag: 29e50ca
 imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ''
 podAnnotations: {}
 podSecurityContext: {}
-securityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - all
-cronJob:
-  enabled: false
-  schedule: 0 0 * * 0
-env:
-  MON_PORT: 8888
-  GRPC_PORT: 8086
-  ENCLAVE_CID: 16
-  ENCLAVE_PORT: 5000
+
+web:
+  image:
+    repository: dimozone/synthetic-wallet-instance
+    pullPolicy: IfNotPresent
+    tag: 17261ec
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - all
+  env:
+    MON_PORT: 8888
+    GRPC_PORT: 8086
+    ENCLAVE_CID: 16
+    ENCLAVE_PORT: 5000
+  ports:
+  - name: mon-http
+    containerPort: 8888
+    protocol: TCP
+  - name: grpc
+    containerPort: 8086
+    protocol: TCP
+  resources:
+    limits:
+      cpu: 250m
+      memory: 384Mi
+    requests:
+      cpu: 100m
+      memory: 192Mi
+
+enclave:
+  image:
+    repository: dimozone/synthetic-wallet-enclave
+    pullPolicy: IfNotPresent
+    tag: 30ba023
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - all
+  env:
+    ENCLAVE_CPU_COUNT: '2'
+    ENCLAVE_MEMORY_SIZE: '1000'
+    ENCLAVE_CID: 16
+    AWS_REGION: 'us-east-2'
+  ports:
+  resources:
+    limits:
+      aws.ec2.nitro/nitro_enclaves: "1"
+      hugepages-1Gi: 1Gi
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      aws.ec2.nitro/nitro_enclaves: "1"
+      hugepages-1Gi: 1Gi
+      memory: 128Mi
+      cpu: 100m
+
 service:
   type: ClusterIP
   ports:
@@ -36,13 +74,7 @@ service:
       port: 8086
       targetPort: grpc
       protocol: TCP
-ports:
-  - name: mon-http
-    containerPort: 8888
-    protocol: TCP
-  - name: grpc
-    containerPort: 8086
-    protocol: TCP
+
 ingress:
   enabled: false
   className: nginx
@@ -59,13 +91,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
-resources:
-  limits:
-    cpu: 250m
-    memory: 384Mi
-  requests:
-    cpu: 100m
-    memory: 192Mi
+
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -79,6 +105,10 @@ podDisruptionBudget:
 kafka:
   clusterName: kafka-dev-dimo-kafka
   topics: []
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ''
 serviceMonitor:
   enabled: true
   path: /metrics
