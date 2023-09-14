@@ -47,7 +47,7 @@ enclave:
     ENCLAVE_CPU_COUNT: '2'
     ENCLAVE_MEMORY_SIZE: '1000'
     ENCLAVE_CID: '16'
-    AWS_REGION: us-east-2
+    AWS_REGION: 'us-east-2'
     ENCLAVE_DEBUG_MODE: 'yes'
   ports: null
   resources:
