@@ -15,10 +15,10 @@ web:
       drop:
         - all
   env:
-    MON_PORT: 8888
-    GRPC_PORT: 8086
-    ENCLAVE_CID: 16
-    ENCLAVE_PORT: 5000
+    MON_PORT: '8888'
+    GRPC_PORT: '8086'
+    ENCLAVE_CID: '16'
+    ENCLAVE_PORT: '5000'
   ports:
     - name: mon-http
       containerPort: 8888
@@ -46,7 +46,7 @@ enclave:
   env:
     ENCLAVE_CPU_COUNT: '2'
     ENCLAVE_MEMORY_SIZE: '1000'
-    ENCLAVE_CID: 16
+    ENCLAVE_CID: '16'
     AWS_REGION: us-east-2
     ENCLAVE_DEBUG_MODE: 'yes'
   ports: null
@@ -110,7 +110,3 @@ serviceMonitor:
   path: /metrics
   port: mon-http
   interval: 30s
-image:
-  tag: 740a73d
-  web:
-    tag: 7ca4239
