@@ -47,7 +47,7 @@ spec:
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           envFrom:
           - configMapRef:
-              name: {{ include "synthetic-wallet-instance.fullname" . }}-enclave-config
+              name: {{ include "synthetic-wallet-instance.fullname" . }}-web-config
           - secretRef:
               name: {{ include "synthetic-wallet-instance.fullname" . }}-secret
           ports:
