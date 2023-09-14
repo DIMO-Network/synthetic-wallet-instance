@@ -7,6 +7,11 @@ web:
 enclave:
   image:
     tag: 30ba023
+  env:
+    ENCLAVE_CPU_COUNT: '2'
+    ENCLAVE_MEMORY_SIZE: '1000'
+    ENCLAVE_CID: '16'
+    AWS_REGION: us-east-2
 
 ingress:
   enabled: false
