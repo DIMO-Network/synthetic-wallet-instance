@@ -64,13 +64,13 @@ spec:
           image: dimozone/synthetic-wallet-enclave:d5b0d6f
           env:
           - name: ENCLAVE_CPU_COUNT
-            value: 2
+            value: '2'
           - name: ENCLAVE_MEMORY_SIZE
-            value: 1000
+            value: '1000'
           - name: ENCLAVE_CID
-            value: 16
+            value: '16'
           - name: AWS_REGION
-            value: us-east-2
+            value: 'us-east-2'
           lifecycle:
             preStop:
               exec:
