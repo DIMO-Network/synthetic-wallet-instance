@@ -80,7 +80,7 @@ spec:
             failureThreshold: 2
             initialDelaySeconds: 10
           resources:
-            {{- toYaml .Values.web.resources | nindent 12 }}
+            {{- toYaml .Values.enclave.resources | nindent 12 }}
           volumeMounts:
             - name: nitro-enclaves
               mountPath: /dev/nitro_enclaves
