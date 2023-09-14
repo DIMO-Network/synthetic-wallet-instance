@@ -110,4 +110,4 @@ serviceMonitor:
   port: mon-http
   interval: 30s
 image:
-  tag: 74cea93
+  tag: 8e8c001
