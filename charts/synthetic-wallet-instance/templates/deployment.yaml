@@ -61,7 +61,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: synthetic-wallet-enclave
-          image: dimozone/synthetic-wallet-enclave:d5b0d6f
+          image: dimozone/synthetic-wallet-enclave:30ba023
           env:
           - name: ENCLAVE_CPU_COUNT
             value: '2'
