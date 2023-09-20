@@ -9,6 +9,12 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  minReadySeconds: 10
+  strategy:
+    type: Recreate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       {{- include "synthetic-wallet-instance.selectorLabels" . | nindent 6 }}
