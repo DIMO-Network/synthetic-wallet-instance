@@ -11,7 +11,7 @@ spec:
   {{- end }}
   minReadySeconds: 10
   strategy:
-    type: Recreate
+    type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
