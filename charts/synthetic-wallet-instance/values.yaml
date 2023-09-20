@@ -8,7 +8,7 @@ web:
   image:
     repository: dimozone/synthetic-wallet-instance
     pullPolicy: IfNotPresent
-    tag: d6eb815
+    tag: 1d88588
   securityContext:
     allowPrivilegeEscalation: false
     capabilities:
