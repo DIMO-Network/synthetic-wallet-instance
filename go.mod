@@ -15,7 +15,7 @@ require (
 	github.com/rs/zerolog v1.30.0
 	golang.org/x/sys v0.11.0
 	google.golang.org/grpc v1.57.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require github.com/btcsuite/btcd/btcutil v1.1.0
