@@ -108,6 +108,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 	if err != nil {
 		return nil, err
 	}
+	defer unix.Close(fd) //nolint
 
 	s.Logger.Debug().Msgf("Created socket %d.", fd)
 
@@ -207,6 +208,7 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 	if err != nil {
 		return nil, err
 	}
+	defer unix.Close(fd) //nolint
 
 	s.Logger.Debug().Msgf("Created socket %d.", fd)
 
