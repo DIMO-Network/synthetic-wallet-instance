@@ -20,6 +20,12 @@ func main() {
 		logger.Fatal().Err(err).Msg("Could not load settings")
 	}
 
+	if ll, err := zerolog.ParseLevel(settings.LogLevel); err != nil {
+		logger.Fatal().Err(err).Msgf("Couldn't parse log level setting %q.", settings.LogLevel)
+	} else {
+		logger = logger.Level(ll)
+	}
+
 	logger.Info().Msgf("Loaded settings: CID %s, port %s.", settings.EnclaveCID, settings.EnclavePort)
 
 	serveMonitoring(settings.MonPort, &logger)

@@ -15,6 +15,7 @@ web:
       drop:
         - all
   env:
+    LOG_LEVEL: info
     MON_PORT: '8888'
     GRPC_PORT: '8086'
     ENCLAVE_CID: '16'

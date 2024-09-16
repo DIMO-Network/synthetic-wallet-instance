@@ -2,6 +2,8 @@ package config
 
 // Settings contains the application config
 type Settings struct {
+	LogLevel string `yaml:"LOG_LEVEL"`
+
 	Environment string `yaml:"ENVIRONMENT"`
 	MonPort     string `yaml:"MON_PORT"`
 	GRPCPort    string `yaml:"GRPC_PORT"`
