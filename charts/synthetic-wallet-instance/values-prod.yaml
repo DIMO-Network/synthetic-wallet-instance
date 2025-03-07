@@ -2,7 +2,7 @@ replicaCount: 1
 
 web:
   image:
-    tag: 79a1d06
+    tag: 7abe3b5
 
 enclave:
   image:
