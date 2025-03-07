@@ -78,7 +78,7 @@ func (s Server) GetAddress(ctx context.Context, in *grpc.GetAddressRequest) (*gr
 		return nil, status.Errorf(codes.InvalidArgument, "child_number %d >= 2^31", in.ChildNumber)
 	}
 
-	s.Logger.Info().Msgf("Got address request, child number %d.", in.ChildNumber)
+	s.Logger.Debug().Msgf("Got address request, child number %d.", in.ChildNumber)
 
 	cfg, err := awsconf.LoadDefaultConfig(ctx)
 	if err != nil {
@@ -178,7 +178,7 @@ func (s Server) SignHash(ctx context.Context, in *grpc.SignHashRequest) (*grpc.S
 		return nil, status.Errorf(codes.InvalidArgument, "hash has length %d != %d", len(in.Hash), common.HashLength)
 	}
 
-	s.Logger.Info().Msgf("Got signature request, child number %d, hash %d.", in.ChildNumber, common.BytesToHash(in.Hash))
+	s.Logger.Debug().Msgf("Got signature request, child number %d, hash %d.", in.ChildNumber, common.BytesToHash(in.Hash))
 
 	cfg, err := awsconf.LoadDefaultConfig(ctx)
 	if err != nil {
