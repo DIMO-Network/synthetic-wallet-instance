@@ -37,22 +37,13 @@ func InterceptorLogger(l zerolog.Logger) logging.Logger {
 }
 
 func startGRPCServer(settings *config.Settings, logger *zerolog.Logger) {
-	opts := []logging.Option{
-		// logging.WithLogOnEvents(logging.StartCall, logging.FinishCall),
-		// Add any other option (check functions starting with logging.With).
-	}
-
 	lis, err := net.Listen("tcp", ":"+settings.GRPCPort)
 	if err != nil {
 		logger.Fatal().Err(err).Msgf("Couldn't listen on gRPC port %s.", settings.GRPCPort)
 	}
 
 	logger.Info().Msgf("Starting gRPC server on port %s.", settings.GRPCPort)
-	server := grpc.NewServer(
-		// grpc.ChainUnaryInterceptor(
-		// 	logging.UnaryServerInterceptor(InterceptorLogger(*logger), opts...),
-		// ),
-	)
+	server := grpc.NewServer()
 
 	var wal pb.SyntheticWalletServer
 
