@@ -49,9 +49,9 @@ func startGRPCServer(settings *config.Settings, logger *zerolog.Logger) {
 
 	logger.Info().Msgf("Starting gRPC server on port %s.", settings.GRPCPort)
 	server := grpc.NewServer(
-		grpc.ChainUnaryInterceptor(
-			logging.UnaryServerInterceptor(InterceptorLogger(*logger), opts...),
-		),
+		// grpc.ChainUnaryInterceptor(
+		// 	logging.UnaryServerInterceptor(InterceptorLogger(*logger), opts...),
+		// ),
 	)
 
 	var wal pb.SyntheticWalletServer
