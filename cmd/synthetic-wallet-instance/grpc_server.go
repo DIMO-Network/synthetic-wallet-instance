@@ -38,7 +38,7 @@ func InterceptorLogger(l zerolog.Logger) logging.Logger {
 
 func startGRPCServer(settings *config.Settings, logger *zerolog.Logger) {
 	opts := []logging.Option{
-		logging.WithLogOnEvents(logging.StartCall, logging.FinishCall),
+		// logging.WithLogOnEvents(logging.StartCall, logging.FinishCall),
 		// Add any other option (check functions starting with logging.With).
 	}
 
