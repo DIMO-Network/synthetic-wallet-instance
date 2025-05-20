@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/DIMO-Network/shared"
+	"github.com/DIMO-Network/shared/pkg/settings"
 	"github.com/DIMO-Network/synthetic-wallet-instance/internal/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
@@ -15,7 +15,7 @@ import (
 func main() {
 	logger := zerolog.New(os.Stdout).With().Timestamp().Str("app", "synthetic-wallet-instance").Logger()
 
-	settings, err := shared.LoadConfig[config.Settings]("settings.yaml")
+	settings, err := settings.LoadConfig[config.Settings]("settings.yaml")
 	if err != nil {
 		logger.Fatal().Err(err).Msg("Could not load settings")
 	}
